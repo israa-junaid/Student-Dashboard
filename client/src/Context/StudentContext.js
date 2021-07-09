@@ -28,10 +28,11 @@ export const StudentDataProvider = ({children}) => {
     stu1_id: "",
     stu2_id: "",
     stu3_id: "",
-    isINVITE:""
+    isINVITE:"",
+    phone:""
   });
   const [bool, setbool] = useState(0);
-
+ //console.log(val);
   //STATE FOR GROUP1 MEMBER EMAIL AND CONTACTION
   const [mem1, setmem1] = useState({
     email: "example@gmail.com",
@@ -54,11 +55,11 @@ export const StudentDataProvider = ({children}) => {
 const [isINVITE, setisINVITE] = useState("");
 
 
-  //****************STATE VALUE FOR STORING ALL STUDENT NAMES */
-  const [nameslist, setnameslist] = useState([]);
+  //****************STATE VALUE FOR STORING ALL STUDENT ROLL NO */
+  const [list, setlist] = useState([]);
   ///***FOR STORING FORM VALUES */
   const handleChange = (e) => {
-    console.log("handleChange");
+    // console.log("handleChange");
     const name = e.target.name;
     const value = e.target.value;
     setval((ev) => {
@@ -78,7 +79,7 @@ const [isINVITE, setisINVITE] = useState("");
       axios
         .get(`/student/${value}`)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           const {s_name, email, contact} = res.data;
           if (name == "stu1_id") {
             setmem1({
@@ -129,8 +130,8 @@ const [isINVITE, setisINVITE] = useState("");
     mem3: mem3,
     setmem3: setmem3,
     handleGroup: handleGroup,
-    nameslist: nameslist,
-    setnameslist: setnameslist,
+ list: list,
+    setlist: setlist,
     bool:bool,
     setbool :setbool
     

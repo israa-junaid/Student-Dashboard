@@ -72,6 +72,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     marginLeft: theme.spacing(1),
   },
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
 }));
 
 // const steps = ["Project Details", "Group Details", "Form Review"];
@@ -197,6 +203,12 @@ const Checkout = ({id, isSUBMIT}) => {
       handleAddData();
     }
   }, [id]);
+  useEffect(()=>{
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  },[activeStep])
 
   //**invoke notification if some field is missing */
   const notifyMISSINGDATA = () =>
@@ -207,6 +219,11 @@ const Checkout = ({id, isSUBMIT}) => {
   //**invoke notification if server is not responding welll */
   const notifyServerissue = () =>
     toast.info("Please refresh the page and submit the form again ", {
+      position: "top-center",
+      pauseOnHover: false,
+    });
+    const notifyAlert = () =>
+    toast.info("Please provide unique roll number", {
       position: "top-center",
       pauseOnHover: false,
     });
@@ -237,9 +254,43 @@ const Checkout = ({id, isSUBMIT}) => {
       s_name2,
       s_name3,
     } = val;
-
+    
     if (
-      val.group_count == 2 &&
+      val.group_count == 1  &&
+      (s_organization && s_leader && s_batch,
+      s_internal &&
+        internal_designation &&
+        external_designation &&
+        s_external &&
+        s_proj_title &&
+        s_status &&
+        stu1_id &&
+     
+        externalAdvisorContactNo &&
+        externalAdvisorAddress &&
+        orgAddress &&
+        orgContactNo &&
+        orgDomain)
+    ) {
+      console.log("submitted OF MEMBERS 1");
+      await axios
+        .post("/student/form", val)
+        .then((res) => {
+          console.log(res);
+          setActiveStep(activeStep + 1);
+        })
+
+        // .then((res) => {
+        //   axios.post("/student/sendmail", { stu1_id, stu2_id, s_leader });
+        // })
+        .catch((err) => {
+          console.log(err.response);
+          notifyServerissue();
+        });
+      // setsubmit(true);
+    }
+   else if (
+      val.group_count == 2  && 
       (s_organization && s_leader && s_batch,
       s_internal &&
         internal_designation &&
@@ -268,10 +319,12 @@ const Checkout = ({id, isSUBMIT}) => {
         // })
         .catch((err) => {
           console.log(err.response);
+          console.log("Stud1_id = stud2_id");
           notifyServerissue();
         });
       // setsubmit(true);
-    } else if (
+    } 
+    else if (
       val.group_count == 3 &&
       (s_organization && s_leader && s_batch,
       s_internal &&
@@ -312,27 +365,42 @@ const Checkout = ({id, isSUBMIT}) => {
   const handleNext = () => {
     // console.log(activeStep);
     // setActiveStep(activeStep + 1);
-
-    if (activeStep == 0) {
+    const { stu1_id,stu2_id,stu3_id } = val;
+    if (activeStep == 0) { 
       if(bool == 1 && val.group_count == 1 || val.group_count == 2 || val.group_count == 3 ){
-        setActiveStep(activeStep + 1
-          )
+        setActiveStep(activeStep + 1)
+          //console.log("inside here...")
       }
-    } else if (activeStep === 1) {
+      
+    } 
+     if  (activeStep === 1) {
+
+      if (stu1_id == stu2_id || stu2_id == stu3_id || stu1_id == stu3_id) {
+        console.log("Error in ID's");
+        notifyAlert();
+      } else {
+        setActiveStep(activeStep+1);
+      }
+     
       //**CALLING FUNCTION TO SUBMIT STUDENT DATA */
-      console.log("call handle submit");
+      // console.log("call handle submit");
+      // setActiveStep(activeStep + 1);
     
-      setActiveStep(activeStep + 1);
+     
+      
       // console.log("submitted");
       // setActiveStep(activeStep + 1);
-    }else if(activeStep == 2){
+    } else if(activeStep == 2){
       handlesubmit();
-    }
+    } 
+    
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+
+
 
   return (
     <React.Fragment>

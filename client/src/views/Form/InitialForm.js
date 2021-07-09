@@ -11,6 +11,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 import axios from "axios";
 import PropTypes from "prop-types";
 import {connect, useDispatch, useSelector} from "react-redux";
+import MuiPhoneNumber from "material-ui-phone-number";
 //import FormHelperText from "@material-ui/core/FormHelperText";
 // import Check from "./Check";
 // import InitialDetails from "./InitialDetails";
@@ -22,11 +23,19 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(3),
   },
+  formControl2: {
+    margin: theme.spacing(0),
+    marginTop:"15px",
+    width:"100%"
+  },
 }));
 
 const InitialForm = ({idMain}) => {
+  const value = useContext(StudentDataContext);
+  const {phone,setPhone}=value;
   const classes = useStyles();
   const [bool, setbool] = useState(0);
+  //const [phone,setPhone] = useState(0);
   const [exAdvDetails, setDetails] = useState(0);
   const display = () => {
     setDetails(0);
@@ -46,20 +55,31 @@ const InitialForm = ({idMain}) => {
     }
   };
 
+  
+ //handle change for Phone number 
+  const handleOnChange = (e)=>{
+    console.log("changed")
+    console.log(e)
+    const name = "externalAdvisorContactNo";
+    // console.log(e.target.value);
+    const value= e;
+    setval((ev)=>{
+        return {...ev,[name]:value}
+        
+    })
+}
+
+//   function handleOnChange(value) {
+//     this.setState({
+//        phone: value
+//     });
+//  }
   //***Context */
-  const value = useContext(StudentDataContext);
-  const {handleChange, val, setnameslist, setval} = value;
+ // const value = useContext(StudentDataContext);
+  const {handleChange, val, setlist, setval} = value;
  
-  console.log(value.val);
-  useEffect(() => {
-    axios
-      .get("/student/all/names")
-      .then((res) => {
-        // console.log(res);
-        setnameslist(res.data);
-      })
-      .catch((err) => console.log(err.response));
-  }, []);
+  // console.log(value.val);
+ 
   useEffect(() => {
     const name = "s_leader";
     const value = idMain;
@@ -190,8 +210,8 @@ const InitialForm = ({idMain}) => {
                   autoComplete="given-name"
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
+              <Grid item xs={12} sm={6} className={classes.formControl2} >
+                {/* <TextField
                   required
                   id="externalAdvisorContactNo"
                   name="externalAdvisorContactNo"
@@ -200,7 +220,13 @@ const InitialForm = ({idMain}) => {
                   value={val.externalAdvisorContactNo}
                   onChange={handleChange}
                   autoComplete="family-name"
-                />
+                /> */}
+                <MuiPhoneNumber 
+                defaultCountry={'pk'} 
+                countryCodeEditable={false}
+                onlyCountries={["pk"]} 
+                onChange={handleOnChange}/>
+               
               </Grid>
             </Grid>
 
@@ -258,8 +284,13 @@ const InitialForm = ({idMain}) => {
                     autoComplete="given-name"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
+                <Grid item xs={12} sm={6}  className={classes.formControl2}>
+                <MuiPhoneNumber 
+                defaultCountry={'pk'} 
+                countryCodeEditable={false}
+                onlyCountries={["pk"]} 
+                onChange={handleOnChange}/>
+                  {/* <TextField
                     required
                     id="orgContactNo"
                     name="orgContactNo"
@@ -268,7 +299,7 @@ const InitialForm = ({idMain}) => {
                     fullWidth
                     onChange={handleChange}
                     autoComplete="family-name"
-                  />
+                  /> */}
                 </Grid>
               </Grid>
             ) : (

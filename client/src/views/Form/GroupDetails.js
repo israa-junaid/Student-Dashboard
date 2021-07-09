@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3),
   },
   formControl2: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(0),
     minWidth: 220,
   },
   // selectEmpty: {
@@ -47,14 +47,14 @@ export default function GroupDetails() {
     setval,
     handleChange,
     handleGroup,
-    nameslist,
+    list,
   } = value;
   const {group_count}=val;
   const [bool, setbool] = useState(0);
-  console.log(val);
+  // console.log(val);
   const display = () => {
     if (bool === 0) {
-      console.log("group count is 3");
+      // console.log("group count is 3");
       const name = "group_count";
       const value = 3;
       setval((ev) => {
@@ -62,7 +62,7 @@ export default function GroupDetails() {
       });
       setbool(1);
     } else {
-      console.log("group count is 2");
+      // console.log("group count is 2");
       const name = "group_count";
       const value = 2;
       setval((ev) => {
@@ -94,7 +94,7 @@ export default function GroupDetails() {
 
   // ******************************** HANDLE CHANGE FOR SELECT BOX AND TO UPDATE VALUES
   const handleSelectChangeOf = async (e, value) => {
-    console.log(e, value);
+    // console.log(e, value);
     axios
       .get(`/studentof/${value}`)
       .then((res) => {
@@ -103,7 +103,7 @@ export default function GroupDetails() {
             email: res.data.email,
             contact: res.data.contact,
           });
-          console.log(mem1);
+          // console.log(mem1);
           const name = "stu1_id";
           const value = res.data.id;
 
@@ -135,7 +135,7 @@ export default function GroupDetails() {
           const value = res.data.id;
 
           setval((ev) => {
-            console.log(ev);
+            // console.log(ev);
             return {...ev, [name]: value};
           });
         }
@@ -151,43 +151,7 @@ export default function GroupDetails() {
         Leader Details
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={10} sm={5}>
-          <TextField
-            required
-            id="contactno1"
-            name="name"
-            value={mem1.name}
-            readonly
-            label="Name"
-            fullWidth
-            autoComplete="given-name"
-          />
-          {/* <FormControl className={classes.formControl2}>
-            <InputLabel id="demo-simple-select-label">Name</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              // value={age}
-              onChange={(e) => {
-                handleSelectChangeOf(1, e.target.value);
-
-                const name = "s_name1";
-                const value = e.target.value;
-                setval((ev) => {
-                  return {...ev, [name]: value};
-                });
-              }}
-            >
-              {nameslist.map((v, ind) => {
-                return (
-                  <MenuItem value={v.s_name} key={ind}>
-                    {v.s_name}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl> */}
-        </Grid>
+        
         <Grid item xs={10} sm={5}>
           <TextField
             required
@@ -200,6 +164,19 @@ export default function GroupDetails() {
             readOnly
             autoComplete="given-name"
           />
+        </Grid>
+        <Grid item xs={10} sm={5}>
+          <TextField
+            required
+            id="contactno1"
+            name="name"
+            value={mem1.name}
+            readonly
+            label="Name"
+            fullWidth
+            autoComplete="given-name"
+          />
+          
         </Grid>
         <Grid item xs={10} sm={5}>
           <TextField
@@ -233,6 +210,38 @@ export default function GroupDetails() {
         Second Member Details
       </Typography>
       <Grid container spacing={3}>
+       
+        <Grid item xs={10} sm={5}>
+          <FormControl className={classes.formControl2}>
+            <InputLabel id="demo-simple-select-label">Select Roll No</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              name= "stu2_id"
+              value={val.stu2_id}
+              onChange={handleGroup}
+            >
+              
+              {list.map((v, ind) => {
+                return (
+                  <MenuItem value={v.id} key={ind}>
+                    {v.id}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+          {/* <TextField
+            required
+            id="rollno2"
+            name="stu2_id"
+            value={val.stu2_id}
+            onChange={handleGroup}
+            label="Roll No."
+            fullWidth
+            autoComplete="given-name"
+          /> */}
+        </Grid>
         <Grid item xs={10} sm={5}>
           <TextField
             required
@@ -241,18 +250,6 @@ export default function GroupDetails() {
             value={mem2.name}
             readonly
             label="Name"
-            fullWidth
-            autoComplete="given-name"
-          />
-        </Grid>
-        <Grid item xs={10} sm={5}>
-          <TextField
-            required
-            id="rollno2"
-            name="stu2_id"
-            value={val.stu2_id}
-            onChange={handleGroup}
-            label="Roll No."
             fullWidth
             autoComplete="given-name"
           />
@@ -289,6 +286,38 @@ export default function GroupDetails() {
             Third Member Details
           </Typography>
           <Grid container spacing={3}>
+            
+            <Grid item xs={10} sm={5}>
+            <FormControl className={classes.formControl2}>
+            <InputLabel id="demo-simple-select-label">Select Roll No</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              name= "stu3_id"
+              value={val.stu3_id}
+              onChange={handleGroup}
+            >
+              
+              {list.map((v, ind) => {
+                return (
+                  <MenuItem value={v.id} key={ind}>
+                    {v.id}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+              {/* <TextField
+                required
+                id="rollno3"
+                name="stu3_id"
+                value={val.stu3_id}
+                onChange={handleGroup}
+                label="Roll No."
+                fullWidth
+                autoComplete="given-name"
+              /> */}
+            </Grid>
             <Grid item xs={10} sm={5}>
               <TextField
                 required
@@ -297,18 +326,6 @@ export default function GroupDetails() {
                 value={mem3.name}
                 readonly
                 label="Name"
-                fullWidth
-                autoComplete="given-name"
-              />
-            </Grid>
-            <Grid item xs={10} sm={5}>
-              <TextField
-                required
-                id="rollno3"
-                name="stu3_id"
-                value={val.stu3_id}
-                onChange={handleGroup}
-                label="Roll No."
                 fullWidth
                 autoComplete="given-name"
               />
