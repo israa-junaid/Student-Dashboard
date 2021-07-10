@@ -23,7 +23,8 @@ import {StudentDataContext} from "Context/StudentContext";
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Leader from "./Leader";
-
+import Invited from "./Invited";
+import FormSubmitted from "./FormSubmitted";
 // function Copyright() {
 //     return (
 //         <Typography variant="body2" color="textSecondary" align="center">
@@ -106,6 +107,11 @@ const Checkout = ({id, isSUBMIT}) => {
   const {setmem1, setval, val,bool} = value;
   const [products, setproducts] = value.testing;
   const dispatch = useDispatch();
+  const [isInvite , setIsInvite] = useState("");
+  const [isSubmit , setIsSubmit] = useState("");
+  const [response , setResponse] = useState(0);
+  //const [activeStep, setActiveStep] = React.useState(0);
+  console.log("Logged in person is invited by someone? ",isInvite);
   //*******************useefffect */
   //function callled in useeffect********************/
 
@@ -138,6 +144,10 @@ const Checkout = ({id, isSUBMIT}) => {
             contact,
           },
         });
+         // console.log(isINVITE);
+         setIsInvite(isINVITE);
+         //console.log(isSUBMIT)
+         setIsSubmit(isSUBMIT);
       })
       .catch((err) => {
         // ***dispatching an action in case of LOGIN FAIL
@@ -185,10 +195,8 @@ const Checkout = ({id, isSUBMIT}) => {
   useEffect(() => {
     //***Function to authenticate user
     authy();
-
-    // setActiveStep(2);
-    // // console.log(activeStep);
-  }, []);
+// setActiveStep(2);
+}, []);
   useEffect(() => {
     if (isSUBMIT  == true) {
       console.log(isSUBMIT, "han bai");
@@ -222,11 +230,19 @@ const Checkout = ({id, isSUBMIT}) => {
       position: "top-center",
       pauseOnHover: false,
     });
+    //generate alert when user enter same roll no for stu1 or stu2 or stu3 or do not enter any rollno
     const notifyAlert = () =>
-    toast.info("Please provide unique roll number", {
+    toast.info("Please enter correct Roll number", {
       position: "top-center",
       pauseOnHover: false,
     });
+    //Only leader can fill the form ALERT
+    // const notifyLeader = () =>
+    // console.log("Notifyleader here")
+    // toast.info("Only Leader can fill the form", {
+    //   position: "top-center",
+    //   pauseOnHover: false,
+    // });
 
   //***FORM DATA SUBMISSION FUNCTION */
   const handlesubmit = async () => {
@@ -367,13 +383,22 @@ const Checkout = ({id, isSUBMIT}) => {
     // setActiveStep(activeStep + 1);
     const { stu1_id,stu2_id,stu3_id } = val;
     if (activeStep == 0) { 
+  
       if(bool == 1 && val.group_count == 1 || val.group_count == 2 || val.group_count == 3 ){
+        
         setActiveStep(activeStep + 1)
+       
+        
           //console.log("inside here...")
       }
-      
+      // else {
+      //   notifyLeader();
+      // }
     } 
      if  (activeStep === 1) {
+       if(stu1_id){
+        setActiveStep(activeStep+1);
+       }
 
       if (stu1_id == stu2_id || stu2_id == stu3_id || stu1_id == stu3_id) {
         console.log("Error in ID's");
@@ -403,79 +428,154 @@ const Checkout = ({id, isSUBMIT}) => {
 
 
   return (
-    <React.Fragment>
+    <>
       <CssBaseline />
-      {/* <AppBar position="absolute" color="default" className={classes.appBar}>
-                <Toolbar>
-                    <Typography variant="h6" color="inherit" noWrap>
-                        Company name
-                    </Typography>
-                </Toolbar>
-            </AppBar> */}
+
+      {/* FORM HEADER */}
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography component="h3" variant="h4" align="center">
             Final Year Project Allocation Form
           </Typography>
-          {/* <Stepper activeStep={activeStep} className={classes.stepper}>
-                        {steps.map((label) => (
+              { console.log("RESPONSE: ",response)}
+              {/* CHECK IF THE PERSON IS INVITED BY SOMEONE?? */}
+              {
+                isInvite ? (
+                  // IF THE PERSON IS INVITED THEN RUN THIS CODE
+                    <Invited />
+                  ) : (
+                  <>
+                  {
+                    isSubmit ? (
+                      //IF THE PERSON IS NOT INVITED BY ANYONE, BUT HE HAS SUBMITTED A FORM
+                      // I.E. HE IS THE GROUP LEADER
+                      <>  
+                      {console.log("submit value: ",isSubmit)}
+                        <FormSubmitted />
+                      </>
+                    ) : (
+                      //IF THE PERSON IS NOT INVITED BY ANYONE, NEITHER HE HAS SUBMITTED ANY FORM
+                      // I.E. A NEW COMER
+                      <>
+                        {/* STEPPER INDIVIDUAL FORMS */}
+                        <Stepper activeStep={activeStep} className={classes.stepper}>
+                          {steps.map((label) => (
                             <Step key={label}>
-                                <StepLabel>{label}</StepLabel>
+                              <StepLabel>{label}</StepLabel>
                             </Step>
-                        ))}
-                    </Stepper> */}
-          <Stepper activeStep={activeStep} className={classes.stepper}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <React.Fragment>
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                <Typography variant="h5" gutterBottom>
-                  Your Response has been Recorded Successfully.
-                </Typography>
-                <Typography variant="subtitle1">
-                  Keep checking portal for further details.
-                </Typography>
-                <CardFooter>
-                  <NavLink to="../admin/dashboard">
-                    <Button color="primary" variant="contained">
-                      Back to Home
-                    </Button>
-                  </NavLink>
-                </CardFooter>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {getStepContent(activeStep)}
-                <div className={classes.buttons}>
-                  {activeStep !== 0 && (
-                    <Button onClick={handleBack} className={classes.button}>
-                      Back
-                    </Button>
-                  )}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? "Submit Form" : "Next"}
-                  </Button>
-                </div>
-              </React.Fragment>
-            )}
-          </React.Fragment>
+                          ))}
+                        </Stepper>
+
+                        {/* WHEN REACHED LAST PAGE */}
+                          {
+                            activeStep === steps.length ? (
+                              <>
+                                <FormSubmitted />
+                              </>
+                            ) : (
+                              <>
+                                {getStepContent(activeStep)}
+                                <div className={classes.buttons}>
+                                  {activeStep !== 0 && (
+                                    <Button onClick={handleBack} className={classes.button}>
+                                      Back
+                                    </Button>
+                                  )}
+                                  <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleNext}
+                                    className={classes.button}
+                                    //disabled={!bool}
+                                    
+                                  >
+                                    {activeStep === steps.length - 1 ? "Submit Form" : "Next"}
+                                  </Button>            
+                                </div>
+                              </>
+                            )}
+                      </>
+                    )}
+                  </>
+                )}
         </Paper>
         {/* <Copyright /> */}
       </main>
       <ToastContainer />
-    </React.Fragment>
+    </>
   );
-};
+}
+
+
+
+// return (
+//   <React.Fragment>
+//     <CssBaseline />
+
+//     <main className={classes.layout}>
+//       <Paper className={classes.paper}>
+//         <Typography component="h3" variant="h4" align="center">
+//           Final Year Project Allocation Form
+//         </Typography>
+//         {/* <Stepper activeStep={activeStep} className={classes.stepper}>
+//                       {steps.map((label) => (
+//                           <Step key={label}>
+//                               <StepLabel>{label}</StepLabel>
+//                           </Step>
+//                       ))}
+//                   </Stepper> */}
+//         <Stepper activeStep={activeStep} className={classes.stepper}>
+//           {steps.map((label) => (
+//             <Step key={label}>
+//               <StepLabel>{label}</StepLabel>
+//             </Step>
+//           ))}
+//         </Stepper>
+//         <React.Fragment>
+//           {activeStep === steps.length ? (
+//             <React.Fragment>
+//               <Typography variant="h5" gutterBottom>
+//                 Your Response has been Recorded Successfully.
+//               </Typography>
+//               <Typography variant="subtitle1">
+//                 Keep checking portal for further details.
+//               </Typography>
+//               <CardFooter>
+//                 <NavLink to="../admin/dashboard">
+//                   <Button color="primary" variant="contained">
+//                     Back to Home
+//                   </Button>
+//                 </NavLink>
+//               </CardFooter>
+//             </React.Fragment>
+//           ) : (
+//             <React.Fragment>
+//               {getStepContent(activeStep)}
+//               <div className={classes.buttons}>
+//                 {activeStep !== 0 && (
+//                   <Button onClick={handleBack} className={classes.button}>
+//                     Back
+//                   </Button>
+//                 )}
+//                 <Button
+//                   variant="contained"
+//                   color="primary"
+//                   onClick={handleNext}
+//                   className={classes.button}
+//                 >
+//                   {activeStep === steps.length - 1 ? "Submit Form" : "Next"}
+//                 </Button>
+//               </div>
+//             </React.Fragment>
+//           )}
+//         </React.Fragment>
+//       </Paper>
+//       {/* <Copyright /> */}
+//     </main>
+//     <ToastContainer />
+//   </React.Fragment>
+// );
+// };
 function mapStateToProps({DataRed: {id, isSUBMIT}}) {
   return {id: id, isSUBMIT: isSUBMIT};
 }

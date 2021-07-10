@@ -56,7 +56,7 @@ const InitialForm = ({idMain}) => {
   };
 
   
- //handle change for Phone number 
+ //*************handle change for Phone number 
   const handleOnChange = (e)=>{
     console.log("changed")
     console.log(e)
@@ -67,6 +67,17 @@ const InitialForm = ({idMain}) => {
         return {...ev,[name]:value}
         
     })
+}
+const handleChangeOrg = (e)=>{
+  console.log("orgcontactno")
+  console.log(e)
+  const name = "orgContactNo";
+  // console.log(e.target.value);
+  const value= e;
+  setval((ev)=>{
+      return {...ev,[name]:value}
+      
+  })
 }
 
 //   function handleOnChange(value) {
@@ -289,7 +300,7 @@ const InitialForm = ({idMain}) => {
                 defaultCountry={'pk'} 
                 countryCodeEditable={false}
                 onlyCountries={["pk"]} 
-                onChange={handleOnChange}/>
+                onChange={handleChangeOrg}/>
                   {/* <TextField
                     required
                     id="orgContactNo"

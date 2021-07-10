@@ -35,10 +35,12 @@ const useStyles = makeStyles((theme) => ({
 const Leader = ({idMain}) => {
   const value = useContext(StudentDataContext);
   const {bool,setbool,val,setval,setlist}=value;
+  const [disabled,setdisabled] = useState(true);
   // const [val, setval] = React.useState('');
   const [open, setOpen] = React.useState(false);
     const classes=useStyles();
       const display = () => {
+       // setdisabled(true);
 // console.log("display func");
         if (bool === 0) {
           setbool(1);
