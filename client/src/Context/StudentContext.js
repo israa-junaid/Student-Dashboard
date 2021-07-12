@@ -53,7 +53,7 @@ export const StudentDataProvider = ({children}) => {
   });
 //Invite variable setting 
 const [isINVITE, setisINVITE] = useState("");
-
+const [isInvite,setIsInvite] = useState(false);
 
   //****************STATE VALUE FOR STORING ALL STUDENT ROLL NO */
   const [list, setlist] = useState([]);
@@ -133,7 +133,9 @@ const [isINVITE, setisINVITE] = useState("");
  list: list,
     setlist: setlist,
     bool:bool,
-    setbool :setbool
+    setbool :setbool,
+    isInvite:isInvite,
+    setIsInvite:setIsInvite
     
   };
   return (

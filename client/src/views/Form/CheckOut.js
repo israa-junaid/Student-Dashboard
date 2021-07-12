@@ -25,18 +25,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Leader from "./Leader";
 import Invited from "./Invited";
 import FormSubmitted from "./FormSubmitted";
-// function Copyright() {
-//     return (
-//         <Typography variant="body2" color="textSecondary" align="center">
-//             {"Copyright © "}
-//             <Link color="inherit" href="https://material-ui.com/">
-//                 Your Website
-//             </Link>{" "}
-//             {new Date().getFullYear()}
-//             {"."}
-//         </Typography>
-//     );
-// }
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -99,15 +87,15 @@ function getStepContent(step) {
   }
 }
 
-const Checkout = ({id, isSUBMIT}) => {
+const Checkout = ({id, isSUBMIT,isINVITE}) => {
   const classes = useStyles();
   const history = useHistory();
 
   const value = useContext(StudentDataContext);
-  const {setmem1, setval, val,bool} = value;
+  const {setmem1, setval, val,bool,isInvite,setIsInvite} = value;
   const [products, setproducts] = value.testing;
   const dispatch = useDispatch();
-  const [isInvite , setIsInvite] = useState("");
+  //const [isInvite , setIsInvite] = useState("");
   const [isSubmit , setIsSubmit] = useState("");
   const [response , setResponse] = useState(0);
   //const [activeStep, setActiveStep] = React.useState(0);
@@ -198,11 +186,12 @@ const Checkout = ({id, isSUBMIT}) => {
 // setActiveStep(2);
 }, []);
   useEffect(() => {
+    setIsInvite(isINVITE)
     if (isSUBMIT  == true) {
       console.log(isSUBMIT, "han bai");
       setActiveStep(3);
     }
-  }, [isSUBMIT]);
+  }, [isSUBMIT,isINVITE]);
   const [activeStep, setActiveStep] = React.useState(0);
 
   useEffect(() => {
@@ -395,17 +384,20 @@ const Checkout = ({id, isSUBMIT}) => {
       //   notifyLeader();
       // }
     } 
-     if  (activeStep === 1) {
+     if  (activeStep == 1) {
        if(stu1_id){
         setActiveStep(activeStep+1);
        }
 
-      if (stu1_id == stu2_id || stu2_id == stu3_id || stu1_id == stu3_id) {
+     else if ( stu1_id == stu2_id || stu2_id == stu3_id || stu1_id == stu3_id ) {
+        console.log("Id of stu1: ",stu1_id);
         console.log("Error in ID's");
         notifyAlert();
+
       } else {
         setActiveStep(activeStep+1);
       }
+     
      
       //**CALLING FUNCTION TO SUBMIT STUDENT DATA */
       // console.log("call handle submit");
@@ -437,7 +429,8 @@ const Checkout = ({id, isSUBMIT}) => {
           <Typography component="h3" variant="h4" align="center">
             Final Year Project Allocation Form
           </Typography>
-              { console.log("RESPONSE: ",response)}
+              {/* { console.log("RESPONSE: ",response)} */}
+              {console.log("ISinvite", isInvite)}
               {/* CHECK IF THE PERSON IS INVITED BY SOMEONE?? */}
               {
                 isInvite ? (
@@ -450,7 +443,7 @@ const Checkout = ({id, isSUBMIT}) => {
                       //IF THE PERSON IS NOT INVITED BY ANYONE, BUT HE HAS SUBMITTED A FORM
                       // I.E. HE IS THE GROUP LEADER
                       <>  
-                      {console.log("submit value: ",isSubmit)}
+                      {/* {console.log("submit value: ",isSubmit)} */}
                         <FormSubmitted />
                       </>
                     ) : (
@@ -486,7 +479,7 @@ const Checkout = ({id, isSUBMIT}) => {
                                     color="primary"
                                     onClick={handleNext}
                                     className={classes.button}
-                                    //disabled={!bool}
+                                    disabled={!bool}
                                     
                                   >
                                     {activeStep === steps.length - 1 ? "Submit Form" : "Next"}
@@ -576,7 +569,7 @@ const Checkout = ({id, isSUBMIT}) => {
 //   </React.Fragment>
 // );
 // };
-function mapStateToProps({DataRed: {id, isSUBMIT}}) {
-  return {id: id, isSUBMIT: isSUBMIT};
+function mapStateToProps({DataRed: {id, isSUBMIT,isINVITE}}) {
+  return {id: id, isSUBMIT: isSUBMIT,isINVITE:isINVITE};
 }
 export default connect(mapStateToProps)(Checkout);
