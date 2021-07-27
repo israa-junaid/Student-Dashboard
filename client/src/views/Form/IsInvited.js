@@ -1,16 +1,25 @@
 import React, {useEffect, useState,useContext} from "react";
-import {NavLink} from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import CardFooter from "components/Card/CardFooter.js";
-import axios from "axios";
 import {StudentDataContext} from "Context/StudentContext";
 import {useDispatch, connect, useSelector} from "react-redux";
 import {LOGIN_SUCCESS, LOGIN_FAIL} from "../../ReduxStore/Actions";
+import {NavLink} from "react-router-dom";
+import axios from "axios";
+
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import CardFooter from "components/Card/CardFooter.js";
+
+import SubmittedFormDetails from "./SubmittedFormDetails/Categories/IsInvited";
+
+import blue from '@material-ui/core/colors/blue';
+import red from '@material-ui/core/colors/red';
+const blueColor = blue[500];
+const redColor = red[500];
+
 const Invited= (props) =>  {
   const value = useContext(StudentDataContext);
   
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const {isInvite,setIsInvite} = value;
   useEffect(()=> {
       authy()
@@ -80,7 +89,17 @@ const dispatch = useDispatch();
       console.log("Error in acceptInviatation func");
     }
   }
-
+  //-------------FUNCTIONS---------------------
+  // const acceptInvitation = ()=>{
+  //   setIsInvite(false);
+  // }
+  // const acceptInvitation = async () => {
+  //   const dispatch = useDispatch();
+  //   await axios
+  //   .post(`https://student-server-app.herokuapp.com/student/status?val=true`,{
+  //     rollNo:id}).then((res) => {
+     
+  // }
   const rejectInvitation = async()=>{
     try {
       const req =  await axios.post(`/student/status?val=false`,{rollNo:props.id})
@@ -106,6 +125,11 @@ const dispatch = useDispatch();
         <Typography variant="subtitle1">
           Do you want to be in his group member?
         </Typography>
+
+        <br></br>
+        <SubmittedFormDetails />
+        <br></br>
+
         <CardFooter>
             <NavLink to="../admin/dashboard">
                 <Button color="primary" variant="contained" onClick={acceptInvitation}>

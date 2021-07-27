@@ -12,6 +12,8 @@ import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import routes from "routes.js";
 
 import pagesStyle from "assets/jss/material-dashboard-react/layouts/authStyle.js";
+import register from "assets/img/register.jpeg";
+import login from "assets/img/login2.jpeg";
 
 const switchRoutes = (
   <Switch>
@@ -34,7 +36,13 @@ class Pages extends React.Component {
   componentDidMount() {
     document.body.style.overflow = "unset";
   }
- 
+  getBgImage = () => {
+    if (window.location.pathname.indexOf("/auth/register-page") !== -1) {
+      return register;
+    } else if (window.location.pathname.indexOf("/auth/login") !== -1) {
+      return login;
+    }
+  };
   getActiveRoute = routes => {
     let activeRoute = "Default";
     //incase of wrong url enter with /auth returns to the default page
@@ -55,7 +63,7 @@ class Pages extends React.Component {
         <div className={classes.wrapper}>
           <div
             className={classes.fullPage}
-          
+             style={{ backgroundImage: "url(" + this.getBgImage() + ")" }}
           >
             {switchRoutes}
         

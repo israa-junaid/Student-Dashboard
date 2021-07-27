@@ -236,9 +236,9 @@ export default function UserProfile() {
               <p className={classes.description}>Enrollment No:NED/1934/2018</p>
               <Muted>Contact No.: 0336261839</Muted>
               <CardFooter>
-                <Link to="../admin/dashoard">
+                {/* <Link to="../admin/dashoard">
                   <Button color="primary">Back</Button>
-                </Link>
+                </Link> */}
               </CardFooter>
             </CardBody>
           </Card>

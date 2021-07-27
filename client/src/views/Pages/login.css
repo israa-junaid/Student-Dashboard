@@ -22,6 +22,15 @@
     font-size: 1.5rem;
   }
   
+ 
+  
+  .card-signin .card-body {
+    padding: 2rem;
+    margin-top:15px;
+    margin-bottom:15px;
+
+ 
+  }
   .card-signin .card-img-left {
     width: 45%;
     /* Link to your background image using in the property below! */
@@ -29,15 +38,9 @@
     background-size: cover;
   }
   
-  .card-signin .card-body {
-    padding: 2rem;
- 
-
- 
-  }
-  
   .form-signin {
-    width: 100%;
+    margin-top:15px;
+  margin-bottom:15px;
   }
   
   .form-signin .btn {
