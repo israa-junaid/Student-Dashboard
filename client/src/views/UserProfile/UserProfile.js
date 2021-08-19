@@ -1,52 +1,65 @@
-import React, {useEffect} from "react";
-// @material-ui/core components
-import {makeStyles} from "@material-ui/core/styles";
-//import InputLabel from "@material-ui/core/InputLabel";
-// core components
+import React, { useEffect, useState } from "react";
+import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import { makeStyles } from "@material-ui/core/styles";
+
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
-import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
+import CardFooter from "components/Card/CardFooter.js";
+import Typography from "@material-ui/core/Typography";
+// import Button from "components/CustomButtons/Button.js";
+import Card from "components/Card/Card.js";
+
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
-import CardFooter from "components/Card/CardFooter.js";
+
 import avatar from "assets/img/faces/marc.jpg";
-import Muted from "components/Typography/Muted.js";
-import Quote from "components/Typography/Quote.js";
 import PersonIcon from "@material-ui/icons/Person";
-import {useDispatch, connect, useSelector} from "react-redux";
+import StarIcon from "@material-ui/icons/Star";
+import PhoneIcon from "@material-ui/icons/Phone";
+import MailRoundedIcon from "@material-ui/icons/MailRounded";
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import { useDispatch, connect, useSelector } from "react-redux";
 import axios from "axios";
 // import Userdata from "../../ApiStore/Userdata";
-import {useHistory} from "react-router-dom";
-import {LOGIN_SUCCESS, LOGIN_FAIL} from "../../ReduxStore/Actions";
-import {Link} from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { LOGIN_SUCCESS, LOGIN_FAIL } from "../../ReduxStore/Actions";
+import Userdata from "../../ApiStore/Userdata";
+import { createHashHistory } from "history";
 const styles = {
   cardCategoryWhite: {
-    color: "rgba(255,255,255,.62)",
+    // color: "rgba(255,255,255,.62)",
+    color: "black",
     margin: "0",
-    fontSize: "14px",
+    fontSize: "16px",
+    width: "auto",
     marginTop: "0",
     marginBottom: "0",
+    // border: "2px solid red",
   },
-  cardTitleWhite: {
-    color: "#FFFFFF",
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: "3px",
-    textDecoration: "none",
-  },
+  // cardTitleWhite: {
+  //   color: "#FFFFFF",
+  //   marginTop: "0px",
+  //   minHeight: "auto",
+  //   fontWeight: "300",
+  //   fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+  //   marginBottom: "3px",
+  //   textDecoration: "none",
+  // },
 };
 
 const useStyles = makeStyles(styles);
 
-export default function UserProfile() {
-  const classes = useStyles();
+function UserProfile({ name, contact, email, department, personid }) {
+  //getting the id to check authentication of user if no id means user is not loged in
+  const id = useSelector(({ DataRed }) => DataRed.id);
+  const auth = useSelector(({ DataRed }) => DataRed.auth);
+  ///************ */
+  const [val, setval] = useState(true);
   const history = useHistory();
-
+  const classes = useStyles();
   const dispatch = useDispatch();
   //*******************useefffect */
   //function callled in useeffect********************/
@@ -55,7 +68,6 @@ export default function UserProfile() {
     await axios
       .get("/student/about")
       .then((res) => {
-        console.log(res);
         const {
           personid,
           name,
@@ -83,7 +95,6 @@ export default function UserProfile() {
         });
       })
       .catch((err) => {
-        console.log(err);
         // ***dispatching an action in case of LOGIN FAIL
         dispatch({
           type: LOGIN_FAIL,
@@ -105,14 +116,16 @@ export default function UserProfile() {
   useEffect(() => {
     authy();
   }, []);
+
   return (
     <div>
+      
       <GridContainer>
-        <GridItem xs={12} sm={12} md={8}>
+      <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Edit Profile</h4>
-              <p className={classes.cardCategoryWhite}>Complete your profile</p>
+              {/* <p className={classes.cardCategoryWhite}>Complete your profile</p> */}
             </CardHeader>
             <CardBody>
               <GridContainer>
@@ -128,30 +141,15 @@ export default function UserProfile() {
                     }}
                   />
                 </GridItem> */}
-                <GridItem xs={14} sm={14} md={5}>
-                  <CustomInput
-                    labelText="SeatNo."
-                    id="seatno"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={14} sm={14} md={5}>
-                  <CustomInput
-                    labelText="Email address"
-                    id="email-address"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
+               
               </GridContainer>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
+                  
                   <CustomInput
                     labelText="First Name"
                     id="first-name"
+                    
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -161,6 +159,26 @@ export default function UserProfile() {
                   <CustomInput
                     labelText="Last Name"
                     id="last-name"
+                    formControlProps={{
+                      fullWidth: true,
+                    }}
+                  />
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+              <GridItem xs={12} sm={12} md={6}>
+                  <CustomInput
+                    labelText="Department"
+                    id="department"
+                    formControlProps={{
+                      fullWidth: true,
+                    }}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
+                  <CustomInput
+                    labelText="Email address"
+                    id="email-address"
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -179,8 +197,8 @@ export default function UserProfile() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
-                    labelText="Enrollment No."
-                    id="enrollmentno"
+                    labelText="Roll No"
+                    id="rollno"
                     formControlProps={{
                       fullWidth: true,
                     }}
@@ -188,7 +206,7 @@ export default function UserProfile() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
-                    labelText="Year"
+                    labelText="Contact"
                     id="year"
                     formControlProps={{
                       fullWidth: true,
@@ -217,8 +235,8 @@ export default function UserProfile() {
               <Button color="primary">Update Profile</Button>
             </CardFooter>
           </Card>
-        </GridItem>
-        <GridItem xs={11} sm={11} md={4}>
+          </GridItem>
+        <GridItem xs={12} sm={12} md={4}>
           <Card profile>
             <CardAvatar profile>
               <a href="#pablo" onClick={(e) => e.preventDefault()}>
@@ -226,20 +244,60 @@ export default function UserProfile() {
               </a>
             </CardAvatar>
             <CardBody profile>
-              <h6 className={classes.cardCategory}>
-                Seat No: <strong>CT-18018</strong>
-              </h6>
-              <h4 className={classes.cardTitle}>
-                <strong>Sundus Zehra</strong>
-              </h4>
-              <p className={classes.description}>sunduszehra725@gmail.com</p>
-              <p className={classes.description}>Enrollment No:NED/1934/2018</p>
-              <Muted>Contact No.: 0336261839</Muted>
-              <CardFooter>
-                {/* <Link to="../admin/dashoard">
-                  <Button color="primary">Back</Button>
-                </Link> */}
-              </CardFooter>
+              <h5 className={`${classes.cardCategoryWhite} mt-2`}>
+                <span className={`mr-2`}>
+                  
+                </span>
+                <Typography style={{ fontWeight: 600 }}>
+                    Name: {name}
+                </Typography>
+                
+              </h5>
+              <div
+                className={`d-flex justify-content-center align-items-center`}
+              >
+                <h5 className={`${classes.cardCategoryWhite} mt-2`}>
+               
+                   Department: {department}
+                
+                  
+                </h5>
+              </div>
+              <h5 className={`${classes.cardCategoryWhite} mt-2`}>
+                <span className={`mr-2`}>
+                  
+                </span>
+               
+                 Roll No: {id}
+                
+                
+              </h5>
+              <h5 className={`${classes.cardCategoryWhite} mt-2`}>
+                <span className={`mr-2`}>
+                  
+                </span>
+                
+                Designation: Student
+                
+                
+              </h5>
+              <h5 className={`${classes.cardCategoryWhite} mt-2`}>
+                <span className={`mr-2`}>
+                  
+                </span>
+               
+                Contact: {contact}
+                
+                
+              </h5>
+              <h5 className={`${classes.cardCategoryWhite} mt-2`}>
+                <span className={`mr-2`}>
+                  
+                </span>
+                
+                Email: {email}            
+              </h5>
+
             </CardBody>
           </Card>
         </GridItem>
@@ -247,3 +305,15 @@ export default function UserProfile() {
     </div>
   );
 }
+
+function mapStateToProps({ DataRed: { name, contact, email, department, personid } }) {
+  return {
+    name,
+    contact,
+    email,
+    department,
+    personid
+  };
+}
+export default connect(mapStateToProps)(UserProfile);
+

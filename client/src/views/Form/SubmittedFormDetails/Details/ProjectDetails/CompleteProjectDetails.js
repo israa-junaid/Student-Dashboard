@@ -1,11 +1,13 @@
-import React from 'react';
+import React,{useState} from 'react';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import { makeStyles } from '@material-ui/core/styles';
 import { blueGrey } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
-
+import { useEffect } from 'react';
+import axios from "axios";
+import {useDispatch, connect, useSelector} from "react-redux";
 const footer = blueGrey[50];
 
 const useStyles = makeStyles({
@@ -15,8 +17,41 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SubmittedFormDetails() {
+const SubmittedFormDetails = ({idMain}) => {
   const classes = useStyles();
+  const [data, setdata] = useState([]);
+  
+
+  useEffect(() => {
+    axios
+      .get("/student/getformdata/rollNo")
+      .then((res) => {
+        console.log(res);
+        //setdata(res.data);
+      })
+      .catch((err) => console.log(err.response));
+  }, []);
+
+  // useEffect(()=>{
+  //   const axiosData = async () => {
+  //     const res = await axios ("/student/form")
+  //     console.log(res.data);
+  //   }
+    
+    // await axios
+    //     .get("/student/form")
+    //     .then((res) => {
+    //       console.log(res);
+    //     })
+    
+  // },[])
+  // const handlesubmit = async () => {
+  //   await axios
+  //   .get("/student/form")
+  //   .then((res) => {
+  //     console.log(res);
+  //   })
+  // }
 
   return (
         <>
@@ -52,3 +87,7 @@ export default function SubmittedFormDetails() {
         </>
   );
 }
+function mapStateToProps({DataRed :{id}}){
+  return {idMain : id}
+}
+export default connect(mapStateToProps)(SubmittedFormDetails);

@@ -14,12 +14,14 @@
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
     overflow: hidden;
+  
   }
   
   .card-signin .card-title {
     margin-bottom: 2rem;
     font-weight: 300;
     font-size: 1.5rem;
+    
   }
   
  
@@ -28,6 +30,7 @@
     padding: 2rem;
     margin-top:15px;
     margin-bottom:15px;
+    
 
  
   }

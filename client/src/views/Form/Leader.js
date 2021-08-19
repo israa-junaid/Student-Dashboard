@@ -73,12 +73,15 @@ const Leader = ({idMain}) => {
       setOpen(false);
     };
 
+    
     useEffect(() => {
+      
       axios
         .get("/student/all/rollNo")
         .then((res) => {
           console.log(res);
           setlist(res.data);
+          
         })
         .catch((err) => console.log(err.response));
     }, []);

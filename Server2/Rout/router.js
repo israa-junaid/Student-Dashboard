@@ -67,4 +67,11 @@ router.post("/student/status", updateStatus);
 router.get("/student/test/ahmed", test);
 
 router.get("/student/mail/test", testmai);
+
+// Logout
+router.get('/logout', (req, res) => {
+  console.log(`Logout Page`);
+  res.clearCookie('jwt',{path:'/'});
+  res.status(200).send("USer Logout");
+});
 module.exports = router;

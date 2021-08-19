@@ -277,7 +277,7 @@ const Checkout = ({id, isSUBMIT,isINVITE}) => {
       await axios
         .post("/student/form", val)
         .then((res) => {
-          console.log(res);
+          console.log("Hre"+ res);
           setActiveStep(activeStep + 1);
         })
 
